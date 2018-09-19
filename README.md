@@ -5,8 +5,23 @@ Open source subset of Proof. Description of each included module can be found in
 `3rdparty/proof-gtest`+`proofboot`+`proofseed`+`proofbase` is not related to any printing industry specifics and is mostly a common use framework.
 `proofutils` and `proofnetworkjdf` are more inclined to printing industry (JDF is printing industry standard for file-based protocols for example), but some stuff from proofutils can be used in almost any production (support for label printers or EPL generation for example).
 
+#### ProofBoot
+Build basics and deployment scripts. [README.md](https://github.com/opensoft/proofboot/blob/develop/README.md)
+
+#### ProofSeed
+Low-level abstractions such as futures, containers traversal, task scheduling. [README.md](https://github.com/opensoft/proofseed/blob/develop/README.md)
+
+#### ProofBase
+Non-gui common stuff. [README.md](https://github.com/opensoft/proofbase/blob/develop/README.md)
+
+#### ProofUtils
+Utility classes mostly needed for printing industry applications. [README.md](https://github.com/opensoft/proofutils/blob/develop/README.md)
+
+#### ProofNetworkJdf
+JDF standard support. [README.md](https://github.com/opensoft/proofnetworkjdf/blob/develop/README.md)
+
 ## Requirements
- * GCC 4.9.2 (soon to be deprecated) or clang 6.0+ (preferred). MSVC17 compiler is also supported, but not recommended.
+ * GCC 4.9.2+ or clang 6.0+ (preferred). MSVC17 compiler is also supported, but not recommended.
  * Python >= 3.5
  * Qt 5.10
  * qrencode library
@@ -45,3 +60,8 @@ make -j8
 
 ## Repository updates
 This repository will be updated infrequently (mostly on releases of closed source repository with full Proof framework) and is more a combining repository for all open source parts of Proof. Submodules are pointed on branches so you can run `git submodule update --remote --recursive --merge` to update to recent develop branch of submodules.
+
+## API/ABI compatibility
+Right now framework is in its 0 version, which means we are not providing any compatibility (but are trying to not break it of course). With 1.0 release we will support API backward compatibility in major version. ABI compatibility will not be provided unfortunately but we will do our best to not break it. Reasons for no ABI compatibility are:
+ * Internally we don't have this library shared between different apps. It is either packed in APK file with everything from Qt and Proof that is needed or (in case of linux environment) we pack proof libraries into deb package and deploy them in application-related directory.
+ * Most of closed source parts of Proof are modules with support for various REST APIs. This APIs are pretty fluid and we need to update them pretty often.
