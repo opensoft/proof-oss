@@ -1,0 +1,56 @@
+sudo: required
+dist: trusty
+language: cpp
+services:
+  - docker
+
+cache:
+  directories:
+    - $HOME/builder_ccache
+    - $HOME/full_build
+
+before_install: export -f travis_fold && export -f travis_time_start && export -f travis_time_finish && export -f travis_nanoseconds
+
+jobs:
+  include:
+    - &compile
+      stage: compilation and static checks
+      name: Compilation (Debian9/clang/ccache)
+      script: proofboot/travis/proof/compile/linux_compile.sh
+    - <<: *compile
+      name: Code style check with clang-format
+      env: DUMMY=clang-format #We don't need our default cache here
+      script: proofboot/travis/proof/compile/clang-format_check.sh
+    - <<: *compile
+      name: Static code analysis with clazy
+      env: DUMMY=clazy #We don't need our default cache here
+      script: proofboot/travis/proof/compile/clazy_check.sh
+    - <<: *compile
+      name: Compilation (Android27/gcc/ccache)
+      language: android
+      env: DUMMY=android
+      android:
+        components:
+          - tools
+          - platform-tools
+          - tools
+          - build-tools-27.0.3
+          - android-27
+      script: proofboot/travis/proof/compile/android_compile.sh
+
+    - &unit-tests
+      stage: unit tests
+      name: tests/ProofSeed
+      script: proofboot/travis/proof/unit-tests/run_tests.sh seed
+    - <<: *unit-tests
+      name: tests/ProofCore
+      script: proofboot/travis/proof/unit-tests/run_tests.sh core
+    - <<: *unit-tests
+      name: tests/ProofNetwork
+      script: proofboot/travis/proof/unit-tests/run_tests.sh network network-jdf network-mis
+    - <<: *unit-tests
+      name: tests/ProofNetwork/Services
+      script: proofboot/travis/proof/unit-tests/run_tests.sh network-lprprinter network-ums
+    - <<: *unit-tests
+      name: tests/ProofUtils
+      script: proofboot/travis/proof/unit-tests/run_tests.sh utils

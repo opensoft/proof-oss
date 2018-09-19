@@ -1,0 +1,24 @@
+[submodule "proofboot"]
+	path = proofboot
+	url = https://github.com/opensoft/proofboot.git
+	branch = develop
+[submodule "3rdparty/proof-gtest"]
+	path = 3rdparty/proof-gtest
+	url = https://github.com/opensoft/proof-gtest.git
+	branch = develop
+[submodule "proofseed"]
+	path = proofseed
+	url = https://github.com/opensoft/proofseed.git
+	branch = develop
+[submodule "proofbase"]
+	path = proofbase
+	url = https://github.com/opensoft/proofbase.git
+	branch = develop
+[submodule "proofutils"]
+	path = proofutils
+	url = https://github.com/opensoft/proofutils.git
+	branch = develop
+[submodule "proofnetworkjdf"]
+	path = proofnetworkjdf
+	url = https://github.com/opensoft/proofnetworkjdf.git
+	branch = develop
