@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/opensoft/proof-oss.svg?branch=master)](https://travis-ci.com/opensoft/proof-oss)
 # Proof-OSS
 Open source subset of Proof. Description of each included module can be found in respective repository.
 
