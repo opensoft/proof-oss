@@ -14,39 +14,21 @@ android:TARGETS_LIST -= examples tools
 nothing:TARGETS_LIST =
 print_log("Selected metatargets: $$TARGETS_LIST")
 
-googletest.subdir = 3rdparty/proof-gtest
-contains(TARGETS_LIST, tests):SUBDIRS += googletest
-test-runner.subdir = tests/test-runner
-
-seed.subdir = proofseed
-seed_tests.file = proofseed/proofseed_tests.pro
-seed_tests.depends = googletest seed
-contains(TARGETS_LIST, libs):SUBDIRS += seed
-contains(TARGETS_LIST, tests):SUBDIRS += seed_tests
-
-base.subdir = proofbase
-base.depends = seed
-base_tests.file = proofbase/proofbase_tests.pro
-base_tests.depends = googletest base
-contains(TARGETS_LIST, libs):SUBDIRS += base
-contains(TARGETS_LIST, tests):SUBDIRS += base_tests
-
-utils.subdir = proofutils
-utils.depends = base
-utils_plugins.file = proofutils/proofutils_plugins.pro
-utils_plugins.depends = utils
-utils_tests.file = proofutils/proofutils_tests.pro
-utils_tests.depends = googletest utils
-contains(TARGETS_LIST, libs):SUBDIRS += utils utils_plugins
-contains(TARGETS_LIST, tests):SUBDIRS += utils_tests
-
-network-jdf.subdir = proofnetworkjdf
-network-jdf.depends = base
-network-jdf_tests.file = proofnetworkjdf/proofnetworkjdf_tests.pro
-network-jdf_tests.depends = googletest network-jdf
-contains(TARGETS_LIST, libs):SUBDIRS += network-jdf
-contains(TARGETS_LIST, tests):SUBDIRS += network-jdf_tests
+MODULES = $$all_proof_modules()
+MODULES += 3rdparty/proof-gtest
+MODULES -= $$EXCLUDED_MODULES
+add_proof_modules_to_subdirs(MODULES)
 
 SORTED_SUBDIRS = $$resolve_depends(SUBDIRS)
 SORTED_SUBDIRS = $$reverse(SORTED_SUBDIRS)
 for (SUBDIR, SORTED_SUBDIRS):print_log("Target $$SUBDIR depends on: $$eval($${SUBDIR}.depends)")
+
+for (module, MODULES):DISTFILES += \
+    $${module}/proofmodule.json \
+    $${module}/*.py \
+    $${module}/*.pri \
+    $${module}/*.md \
+    $${module}/features/*.prf \
+    $${module}/boot/*
+
+DISTFILES += *.md
