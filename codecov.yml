@@ -1,0 +1,7 @@
+ignore:
+  - "**/*amqp*" # not really possible to verify by unit-tests without mocking rabbitmq server
+  - "**/amqp*" # not really possible to verify by unit-tests without mocking rabbitmq server
+  - "**/apicall*" # deprecated
+  - ".*proofutils/lprprinter.(h|cpp)" # not really possible to verify by unit-tests without mocking lpr/lpq system utilities
+fixes:
+  - "/sandbox/proof/::"
