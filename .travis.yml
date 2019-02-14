@@ -1,5 +1,5 @@
 sudo: required
-dist: trusty
+dist: xenial
 language: cpp
 services:
   - docker
@@ -26,7 +26,25 @@ jobs:
       env: DUMMY=clazy #We don't need our default cache here
       script: proofboot/travis/proof/compile/clazy_check.sh
     - <<: *compile
-      name: Compilation (Android27/gcc/ccache)
+      name: Clang-Tidy (clang-analyzer)
+      env: DUMMY=clang-tidy-clang-analyzer #We don't need our default cache here
+      script: proofboot/travis/proof/compile/clang-tidy_check.sh clang_analyzer
+    - <<: *compile
+      name: Clang-Tidy (bugprone, cert, cppcoreguidelines, performance)
+      env: DUMMY=clang-tidy-core #We don't need our default cache here
+      script: proofboot/travis/proof/compile/clang-tidy_check.sh core
+    - <<: *compile
+      name: Clang-Tidy (google, hicpp, llvm, misc, modernize, readability)
+      env: DUMMY=clang-tidy-misc #We don't need our default cache here
+      script: proofboot/travis/proof/compile/clang-tidy_check.sh misc
+    - <<: *compile
+      name: Code coverage check
+      env: DUMMY=codecov #We don't need our default cache here
+      if: type != pull_request
+      script: proofboot/travis/proof/compile/codecov_check.sh
+    - <<: *compile
+      name: Compilation (Android28/clang/ccache)
+      dist: trusty
       language: android
       env: DUMMY=android
       android:
@@ -34,8 +52,8 @@ jobs:
           - tools
           - platform-tools
           - tools
-          - build-tools-27.0.3
-          - android-27
+          - build-tools-28.0.3
+          - android-28
       script: proofboot/travis/proof/compile/android_compile.sh
 
     - &unit-tests
